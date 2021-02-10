@@ -1946,7 +1946,7 @@ static int32_t
 ble_gap_slave_timer(void)
 {
     uint32_t ticks_until_exp;
-    int rc;
+
 
     ticks_until_exp = ble_gap_slave_ticks_until_exp();
     if (ticks_until_exp != 0) {
@@ -1957,12 +1957,14 @@ ble_gap_slave_timer(void)
     /*** Timer expired; process event. */
 
     /* Stop advertising. */
+#if NIMBLE_BLE_ADVERTISE
+    int rc;
     rc = ble_gap_adv_enable_tx(0);
     if (rc != 0) {
         /* Failed to stop advertising; try again in 100 ms. */
         return 100;
     }
-
+#endif
     /* Clear the timer and cancel the current procedure. */
     ble_gap_slave_reset_state(0);
 

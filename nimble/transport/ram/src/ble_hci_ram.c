@@ -86,7 +86,9 @@ ble_hci_trans_hs_cmd_tx(uint8_t *cmd)
 {
     int rc;
 
-    assert(ble_hci_ram_rx_cmd_ll_cb != NULL);
+    if(ble_hci_ram_rx_cmd_ll_cb == NULL){
+        return 0;
+    }
 
     rc = ble_hci_ram_rx_cmd_ll_cb(cmd, ble_hci_ram_rx_cmd_ll_arg);
     return rc;
