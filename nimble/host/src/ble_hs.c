@@ -357,8 +357,13 @@ ble_hs_sync(void)
 
     return rc;
 }
+static bool m_sync = true;
+void ble_hs_sync_set(bool sync)
+{
+    m_sync = sync;
+}
 
-static int
+int
 ble_hs_reset(void)
 {
     int rc;
@@ -367,6 +372,9 @@ ble_hs_reset(void)
 
     ble_hs_sync_state = 0;
 
+    if (!m_sync) {
+        return 0;
+    }
     /* Reset transport.  Assume success; there is nothing we can do in case of
      * failure.  If the transport failed to reset, the host will reset itself
      * again when it fails to sync with the controller.
